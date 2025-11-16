@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 
 import fire
+from tqdm import tqdm
 
 from note.libs import csv_exporter, data_fetcher
 
@@ -72,7 +73,8 @@ def export_data(
     logging.info(f"Fetching data for {len(tickers)} tickers...")
     ticker_data_list = []
 
-    for ticker in tickers:
+    # Fetch data for each ticker with progress bar
+    for ticker in tqdm(tickers, desc="Fetching stock data", unit="stock"):
         data = data_fetcher.fetch_with_retry(ticker, max_retries=3)
         if data:
             # Step 2.5: Fetch earnings history (3 years)

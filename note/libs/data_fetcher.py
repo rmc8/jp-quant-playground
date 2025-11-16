@@ -11,16 +11,16 @@ from typing import Optional
 import yfinance as yf
 
 
-def fetch_ticker_data(ticker: str) -> dict:
+def fetch_ticker_data(ticker: str | int) -> dict:
     """Fetch financial data for a single ticker from yfinance.
 
     Args:
         ticker: Stock ticker code (e.g., "7203" or "7203.T" for Toyota)
-                If ticker is numeric only, ".T" suffix is automatically added for Tokyo exchange
+                Can be string or int. If numeric only, ".T" suffix is automatically added for Tokyo exchange
 
     Returns:
         Dictionary containing financial data fields:
-        - ticker: Stock ticker code (original format)
+        - ticker: Stock ticker code (original format as string)
         - market_cap: Market capitalization
         - total_cash: Cash and cash equivalents
         - total_debt: Total debt
@@ -35,18 +35,21 @@ def fetch_ticker_data(ticker: str) -> dict:
         Returns empty dict {} if fetching fails.
     """
     try:
+        # Convert to string if integer
+        ticker_str = str(ticker)
+
         # Auto-append .T suffix for Japanese stocks (numeric-only tickers)
-        yf_ticker = ticker
-        if ticker.isdigit():
-            yf_ticker = f"{ticker}.T"
-            logging.debug(f"Converting ticker {ticker} to {yf_ticker}")
+        yf_ticker = ticker_str
+        if ticker_str.isdigit():
+            yf_ticker = f"{ticker_str}.T"
+            logging.debug(f"Converting ticker {ticker_str} to {yf_ticker}")
 
         stock = yf.Ticker(yf_ticker)
         info = stock.info
 
         # Extract financial metrics with safe gets
         data = {
-            "ticker": ticker,
+            "ticker": ticker_str,  # Always return as string
             "market_cap": info.get("marketCap"),
             "total_cash": info.get("totalCash"),
             "total_debt": info.get("totalDebt"),
@@ -69,11 +72,11 @@ def fetch_ticker_data(ticker: str) -> dict:
         non_null_values = sum(1 for v in data.values() if v is not None)
         if non_null_values > 1:  # More than just ticker
             logging.info(
-                f"Successfully fetched data for {ticker} ({non_null_values} fields)"
+                f"Successfully fetched data for {ticker_str} ({non_null_values} fields)"
             )
             return data
         else:
-            logging.warning(f"No financial data available for {ticker}")
+            logging.warning(f"No financial data available for {ticker_str}")
             return {}
 
     except Exception as e:
@@ -115,11 +118,11 @@ def fetch_with_retry(ticker: str, max_retries: int = 3) -> Optional[dict]:
     return None
 
 
-def fetch_earnings_history(ticker: str) -> dict:
+def fetch_earnings_history(ticker: str | int) -> dict:
     """Fetch historical earnings data (3 years) from yfinance.
 
     Args:
-        ticker: Stock ticker code
+        ticker: Stock ticker code (can be string or int)
 
     Returns:
         Dictionary containing:
@@ -129,16 +132,19 @@ def fetch_earnings_history(ticker: str) -> dict:
         Returns empty values (None) if data not available
     """
     try:
+        # Convert to string if integer
+        ticker_str = str(ticker)
+
         # Auto-append .T suffix for Japanese stocks
-        yf_ticker = ticker
-        if ticker.isdigit():
-            yf_ticker = f"{ticker}.T"
+        yf_ticker = ticker_str
+        if ticker_str.isdigit():
+            yf_ticker = f"{ticker_str}.T"
 
         stock = yf.Ticker(yf_ticker)
         earnings = stock.earnings  # Annual earnings DataFrame
 
         if earnings is None or earnings.empty:
-            logging.warning(f"No earnings data available for {ticker}")
+            logging.warning(f"No earnings data available for {ticker_str}")
             return {"earnings_y0": None, "earnings_y1": None, "earnings_y2": None}
 
         # earnings DataFrame has 'Revenue' and 'Earnings' columns

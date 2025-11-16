@@ -139,3 +139,45 @@ uv run isort .
 ## 📄 ライセンス
 
 このプロジェクトは個人的な実験・学習目的で作成されています。
+
+## Speckit
+
+```mermaid
+flowchart TD
+    Start([開始]) --> Constitution["speckit.constitution<br/>プロジェクト方針定義"]
+    
+    Constitution --> Specify["speckit.specify<br/>要件定義"]
+    
+    Specify --> ClarifyCheck{"要件が不明瞭?"}
+    ClarifyCheck -->|はい| Clarify["speckit.clarify<br/>(オプション)<br/>要件の明確化"]
+    ClarifyCheck -->|いいえ| Plan
+    Clarify --> Plan
+    
+    Plan["speckit.plan<br/>技術計画策定"]
+    
+    Plan --> ChecklistCheck{"品質検証必要?"}
+    ChecklistCheck -->|はい| Checklist["speckit.checklist<br/>(オプション)<br/>品質チェック"]
+    ChecklistCheck -->|いいえ| Tasks
+    Checklist --> Tasks
+    
+    Tasks["speckit.tasks<br/>タスク分解"]
+    
+    Tasks --> AnalyzeCheck{"整合性解析必要?"}
+    AnalyzeCheck -->|はい| Analyze["speckit.analyze<br/>(オプション)<br/>整合性解析"]
+    AnalyzeCheck -->|いいえ| Implement
+    Analyze --> Implement
+    
+    Implement["speckit.implement<br/>TDD実装"]
+    
+    Implement --> End([完了])
+    
+    style Constitution fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    style Specify fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    style Plan fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    style Tasks fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    style Implement fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    
+    style Clarify fill:#F5A623,stroke:#C77E0A,color:#fff
+    style Checklist fill:#F5A623,stroke:#C77E0A,color:#fff
+    style Analyze fill:#F5A623,stroke:#C77E0A,color:#fff
+```

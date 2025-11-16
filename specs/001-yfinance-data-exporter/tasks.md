@@ -29,10 +29,10 @@ description: "Task list for yfinance Data Exporter implementation"
 
 **Purpose**: Project initialization and directory structure
 
-- [ ] T001 Create output directory `note/data/exports/` for CSV files
-- [ ] T002 [P] Create `note/scripts/` directory for CLI entry point
-- [ ] T003 [P] Verify dependencies are installed: polars>=1.35.2, yfinance>=0.2.66, pytest
-- [ ] T004 [P] Create `tests/note/` directory structure for test files
+- [X] T001 Create output directory `note/data/exports/` for CSV files
+- [X] T002 [P] Create `note/scripts/` directory for CLI entry point
+- [X] T003 [P] Verify dependencies are installed: polars>=1.35.2, yfinance>=0.2.66, pytest
+- [X] T004 [P] Create `tests/note/` directory structure for test files
 
 ---
 
@@ -42,13 +42,13 @@ description: "Task list for yfinance Data Exporter implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 [P] Create `note/libs/data_fetcher.py` with stub functions: `fetch_ticker_data(ticker: str) -> dict`, `fetch_with_retry(ticker: str, max_retries: int) -> Optional[dict]`
-- [ ] T006 [P] Implement retry logic with exponential backoff in `note/libs/data_fetcher.py`: 1s, 2s, 4s waits (max 3 retries)
-- [ ] T007 [P] Create `note/libs/csv_exporter.py` with stub functions: `read_tickers_from_tsv(file_path: str, limit: Optional[int]) -> list[str]`, `export_to_csv(data: pl.DataFrame, output_dir: str) -> str`
-- [ ] T008 Implement TSV reading in `note/libs/csv_exporter.py`: read column index 1 (ticker codes), apply `--limit` if specified
-- [ ] T009 Implement CSV export with timestamp in `note/libs/csv_exporter.py`: filename format `stock_data_YYYYMMDD_HHMMSS.csv`
-- [ ] T010 [P] Create CLI entry point `note/scripts/export_stock_data.py` with argparse setup: `--input`, `--limit`, `--output` options (or consider python-fire per research.md)
-- [ ] T011 Add logging configuration in `note/scripts/export_stock_data.py`: INFO/WARNING/ERROR levels, format `[LEVEL] Message`
+- [X] T005 [P] Create `note/libs/data_fetcher.py` with stub functions: `fetch_ticker_data(ticker: str) -> dict`, `fetch_with_retry(ticker: str, max_retries: int) -> Optional[dict]`
+- [X] T006 [P] Implement retry logic with exponential backoff in `note/libs/data_fetcher.py`: 1s, 2s, 4s waits (max 3 retries)
+- [X] T007 [P] Create `note/libs/csv_exporter.py` with stub functions: `read_tickers_from_tsv(file_path: str, limit: Optional[int]) -> list[str]`, `export_to_csv(data: pl.DataFrame, output_dir: str) -> str`
+- [X] T008 Implement TSV reading in `note/libs/csv_exporter.py`: read column index 1 (ticker codes), apply `--limit` if specified
+- [X] T009 Implement CSV export with timestamp in `note/libs/csv_exporter.py`: filename format `stock_data_YYYYMMDD_HHMMSS.csv`
+- [X] T010 [P] Create CLI entry point `note/scripts/export_stock_data.py` with argparse setup: `--input`, `--limit`, `--output` options (or consider python-fire per research.md)
+- [X] T011 Add logging configuration in `note/scripts/export_stock_data.py`: INFO/WARNING/ERROR levels, format `[LEVEL] Message`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -62,13 +62,13 @@ description: "Task list for yfinance Data Exporter implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Implement `fetch_ticker_data()` in `note/libs/data_fetcher.py`: fetch from yfinance API using `yf.Ticker(ticker).info`, `.balance_sheet`, `.cashflow`, `.financials`
-- [ ] T013 [US1] Add error handling to `fetch_ticker_data()`: catch exceptions, return empty dict on failure, log errors
-- [ ] T014 [P] [US1] Implement `fetch_with_retry()` wrapper in `note/libs/data_fetcher.py`: call `fetch_ticker_data()` with retry logic from T006
-- [ ] T015 [P] [US1] Create data transformation function in `note/libs/csv_exporter.py`: `build_dataframe(raw_data_list: list[dict]) -> pl.DataFrame` to construct polars DataFrame from list of ticker data
-- [ ] T016 [US1] Integrate `note/libs/indicators.py` (existing) in `note/libs/csv_exporter.py`: import and call indicator calculation functions on DataFrame
-- [ ] T017 [US1] Wire up main flow in `note/scripts/export_stock_data.py`: read TSV → fetch data for each ticker → build DataFrame → calculate indicators → export CSV
-- [ ] T018 [US1] Add basic validation in `note/scripts/export_stock_data.py`: check input file exists, output directory is writable, exit with code 1 on errors
+- [X] T012 [P] [US1] Implement `fetch_ticker_data()` in `note/libs/data_fetcher.py`: fetch from yfinance API using `yf.Ticker(ticker).info`, `.balance_sheet`, `.cashflow`, `.financials`
+- [X] T013 [US1] Add error handling to `fetch_ticker_data()`: catch exceptions, return empty dict on failure, log errors
+- [X] T014 [P] [US1] Implement `fetch_with_retry()` wrapper in `note/libs/data_fetcher.py`: call `fetch_ticker_data()` with retry logic from T006
+- [X] T015 [P] [US1] Create data transformation function in `note/libs/csv_exporter.py`: `build_dataframe(raw_data_list: list[dict]) -> pl.DataFrame` to construct polars DataFrame from list of ticker data
+- [X] T016 [US1] Integrate `note/libs/indicators.py` (existing) in `note/libs/csv_exporter.py`: import and call indicator calculation functions on DataFrame
+- [X] T017 [US1] Wire up main flow in `note/scripts/export_stock_data.py`: read TSV → fetch data for each ticker → build DataFrame → calculate indicators → export CSV
+- [X] T018 [US1] Add basic validation in `note/scripts/export_stock_data.py`: check input file exists, output directory is writable, exit with code 1 on errors
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently - run with `--limit 5` to verify
 
@@ -82,10 +82,10 @@ description: "Task list for yfinance Data Exporter implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T019 [P] [US2] Update `fetch_ticker_data()` in `note/libs/data_fetcher.py`: ensure all raw financial fields are captured in return dict (market_cap, total_cash, total_debt, total_assets, book_value, operating_cash_flow, capex, ebit, gross_profit, net_income)
-- [ ] T020 [US2] Update `build_dataframe()` in `note/libs/csv_exporter.py`: include both raw data columns AND indicator columns in output DataFrame
-- [ ] T021 [US2] Verify CSV column order in `note/libs/csv_exporter.py`: ticker first, then raw data (alphabetical), then indicators (alphabetical) per data-model.md
-- [ ] T022 [US2] Add data integrity validation in `note/scripts/export_stock_data.py`: log warning if any indicators cannot be calculated due to missing raw data
+- [X] T019 [P] [US2] Update `fetch_ticker_data()` in `note/libs/data_fetcher.py`: ensure all raw financial fields are captured in return dict (market_cap, total_cash, total_debt, total_assets, book_value, operating_cash_flow, capex, ebit, gross_profit, net_income)
+- [X] T020 [US2] Update `build_dataframe()` in `note/libs/csv_exporter.py`: include both raw data columns AND indicator columns in output DataFrame
+- [X] T021 [US2] Verify CSV column order in `note/libs/csv_exporter.py`: ticker first, then raw data (alphabetical), then indicators (alphabetical) per data-model.md
+- [X] T022 [US2] Add data integrity validation in `note/scripts/export_stock_data.py`: log warning if any indicators cannot be calculated due to missing raw data
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - CSV should contain both raw data and indicators
 
@@ -99,12 +99,12 @@ description: "Task list for yfinance Data Exporter implementation"
 
 ### Implementation for User Story 3
 
-- [ ] T023 [P] [US3] Enhance error logging in `note/libs/data_fetcher.py`: log specific failure reason for each ticker (network error, API error, invalid ticker)
-- [ ] T024 [P] [US3] Add null handling in `note/libs/csv_exporter.py`: when raw data field is null, set to polars null (not empty string or 0)
-- [ ] T025 [US3] Update indicator calculation integration: catch calculation errors, log warnings, set indicator to null if calculation fails
-- [ ] T026 [US3] Add summary statistics logging in `note/scripts/export_stock_data.py`: log "Successfully processed X/Y stocks" with count of failures
-- [ ] T027 [US3] Implement file existence check in `note/scripts/export_stock_data.py`: check `--input` file exists before processing, exit with helpful error message if not
-- [ ] T028 [US3] Implement output directory auto-creation in `note/scripts/export_stock_data.py`: use `pathlib.Path.mkdir(parents=True, exist_ok=True)` for `--output` directory
+- [X] T023 [P] [US3] Enhance error logging in `note/libs/data_fetcher.py`: log specific failure reason for each ticker (network error, API error, invalid ticker)
+- [X] T024 [P] [US3] Add null handling in `note/libs/csv_exporter.py`: when raw data field is null, set to polars null (not empty string or 0)
+- [X] T025 [US3] Update indicator calculation integration: catch calculation errors, log warnings, set indicator to null if calculation fails
+- [X] T026 [US3] Add summary statistics logging in `note/scripts/export_stock_data.py`: log "Successfully processed X/Y stocks" with count of failures
+- [X] T027 [US3] Implement file existence check in `note/scripts/export_stock_data.py`: check `--input` file exists before processing, exit with helpful error message if not
+- [X] T028 [US3] Implement output directory auto-creation in `note/scripts/export_stock_data.py`: use `pathlib.Path.mkdir(parents=True, exist_ok=True)` for `--output` directory
 
 **Checkpoint**: All user stories should now be independently functional with robust error handling
 
@@ -114,16 +114,16 @@ description: "Task list for yfinance Data Exporter implementation"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T029 [P] Add type hints to all functions in `note/libs/data_fetcher.py` per Constitution principle V
-- [ ] T030 [P] Add type hints to all functions in `note/libs/csv_exporter.py` per Constitution principle V
-- [ ] T031 [P] Add type hints to main function in `note/scripts/export_stock_data.py` per Constitution principle V
-- [ ] T032 [P] Run `uv run ruff check note/` and fix any linting errors
-- [ ] T033 [P] Run `uv run ruff format note/` to format code
-- [ ] T034 [P] Run `uv run isort note/` to organize imports
-- [ ] T035 Manual end-to-end test per quickstart.md: run with `--limit 5`, verify CSV output contains expected columns
-- [ ] T036 [P] Create basic integration test in `tests/note/test_cli_integration.py`: test CLI with mock input file, verify CSV output exists
-- [ ] T037 [P] Create unit test for retry logic in `tests/note/test_data_fetcher.py`: mock yfinance failures, verify exponential backoff
-- [ ] T038 [P] Create unit test for CSV export in `tests/note/test_csv_exporter.py`: test timestamp filename generation, column ordering
+- [X] T029 [P] Add type hints to all functions in `note/libs/data_fetcher.py` per Constitution principle V
+- [X] T030 [P] Add type hints to all functions in `note/libs/csv_exporter.py` per Constitution principle V
+- [X] T031 [P] Add type hints to main function in `note/scripts/export_stock_data.py` per Constitution principle V
+- [X] T032 [P] Run `uv run ruff check note/` and fix any linting errors
+- [X] T033 [P] Run `uv run ruff format note/` to format code
+- [X] T034 [P] Run `uv run isort note/` to organize imports
+- [X] T035 Manual end-to-end test per quickstart.md: run with `--limit 5`, verify CSV output contains expected columns
+- [X] T036 [P] Create basic integration test in `tests/note/test_cli_integration.py`: test CLI with mock input file, verify CSV output exists
+- [X] T037 [P] Create unit test for retry logic in `tests/note/test_data_fetcher.py`: mock yfinance failures, verify exponential backoff
+- [X] T038 [P] Create unit test for CSV export in `tests/note/test_csv_exporter.py`: test timestamp filename generation, column ordering
 
 ---
 
