@@ -85,7 +85,7 @@
 ### Functional Requirements
 
 - **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
+- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
@@ -94,6 +94,16 @@
 
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
 - **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+
+### Constitution Compliance Requirements
+
+All features MUST comply with the jp-quant-playground Constitution (v1.0.0):
+
+- **Data Quality**: yfinance data validation with polars, explicit null handling for missing data
+- **Reproducibility**: Fixed random seeds, documented parameters, timestamped data acquisition
+- **Transparency**: marimo variable naming follows `{data_type}_{processing}_{condition}` pattern
+- **Performance**: polars (not pandas), cash flow metrics prioritized, lazy evaluation for large datasets
+- **Maintainability**: Type hints, Ruff-compliant, indicator logic in `note/libs/indicators.py`
 
 ### Key Entities *(include if feature involves data)*
 

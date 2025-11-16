@@ -31,7 +31,15 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+**jp-quant-playground Constitution Compliance (v1.0.0)**
+
+- [ ] **I. Data Quality**: Does the feature properly handle yfinance data with validation and error handling? Uses polars schema validation?
+- [ ] **II. Reproducibility**: Are all random seeds fixed? Are backtest parameters documented? Is data acquisition timestamp recorded?
+- [ ] **III. Transparency**: Do marimo variables follow the `{data_type}_{processing}_{condition}` naming pattern? No variable redefinitions?
+- [ ] **IV. Performance**: Uses polars instead of pandas? Prioritizes cash flow metrics (FCF, CROIC) over accounting profits? Uses lazy evaluation for large datasets?
+- [ ] **V. Maintainability**: Type hints present on all functions? Ruff-compliant code? Indicator logic separated in `note/libs/indicators.py`?
+
+**Violations requiring justification**: [List any principle violations and explain why they are necessary]
 
 ## Project Structure
 
